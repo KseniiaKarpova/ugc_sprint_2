@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  filebeat-reviews-api:
+    build:
+      context: ./filebeat
+      dockerfile: dockerfile
+    container_name: reviews_api_filebeat
+    volumes:
+      - logs:/var/app/log
+    depends_on:
+      - kibana-logs
+      - elasticsearch-logs
+    networks:
+      - application_network
+
+  logstash:
+    image: logstash:8.10.2
+    depends_on:
+      - elasticsearch-logs
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
+      ES_HOST: "elasticsearch-logs:9200"
+    volumes:
+      - ./logstash:/config:ro
+    command: logstash -f /config/logstash.conf
+    networks:
+      - application_network
+
+  elasticsearch-logs:
+    image: elasticsearch:8.10.2
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms265m -Xmx265m"
+      - xpack.security.enabled=false
+    volumes:
+      - es-logs-data:/tmp/elasticsearch/data
+    networks:
+      - application_network
+
+  kibana-logs:
+    image: kibana:8.10.2
+    container_name: kibana-posts
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch-logs:9200
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+    depends_on:
+      - elasticsearch-logs
+    networks:
+      - application_network
+
+networks:
+  application_network:
+
+volumes:
+  es-logs-data:
+  logs:
