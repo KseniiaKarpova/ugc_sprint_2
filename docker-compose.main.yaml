@@ -14,12 +14,13 @@ services:
     volumes:
       - ./ReviewsAPI:/opt/app
       - logs:/opt/logs
-    command: poetry run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    command: poetry run uvicorn main:app --host 0.0.0.0 --port 3000 --reload
     depends_on:
       mongos:
         condition: service_healthy
-    ports:
-      - "8000:8000"
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5
 
 #______________Auth_______________
   auth_api:
@@ -40,6 +41,9 @@ services:
         condition: service_started
     networks:
       - application_network
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5
 
   nginx:
     image: nginx:1.19.2
@@ -55,7 +59,7 @@ services:
         condition: service_started
     ports:
       - "8001:8001"
-      - "8002:8002"
+      - "3000:3000"
     networks:
       - application_network
   
@@ -70,6 +74,10 @@ services:
       - nginx
     networks:
       - application_network
+
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5
 
 volumes:
   logs:

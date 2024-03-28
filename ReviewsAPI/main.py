@@ -2,15 +2,14 @@ from utils.constraint import RequestLimit
 from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI, Request, status
-from fastapi import FastAPI, Request
 from fastapi.responses import ORJSONResponse
 from fastapi_pagination import add_pagination
 from motor.motor_asyncio import AsyncIOMotorClient
-#from api import setup_routers
+from api import setup_routers
 from core.config import settings
 from db import mongo, init_db, redis
 from redis.asyncio import Redis
-from core.logger import LOGGING, setup_root_logger, logger
+from core.logger import LOGGING, setup_root_logger
 from middleware.main import setup_middleware
 
 setup_root_logger()
@@ -37,10 +36,9 @@ def create_app() -> FastAPI:
         version='0.1.0',
     )
 
-    #setup_routers(application)
+    setup_routers(application)
     setup_middleware(application)
     add_pagination(application)
-
     return application
 
 
@@ -53,23 +51,19 @@ async def before_request(request: Request, call_next):
     result = await RequestLimit().is_over_limit(user=user)
     if result:
         return ORJSONResponse(
-            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            content={'detail': 'Too many requests'}
-        )
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS, content={
+                'detail': 'Too many requests'
+                }
+            )
 
     response = await call_next(request)
     request_id = request.headers.get('X-Request-Id')
     if not request_id:
         return ORJSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST, content={
-                'detail': 'X-Request-Id is required'})
+                'detail': 'X-Request-Id is required'
+                })
     return response
-
-
-@app.get('/')
-async def root():
-    #logger.warning('Hello World')
-    return {'message': 'Hello World 🎉'}
 
 
 if __name__ == '__main__':

@@ -26,6 +26,9 @@ services:
     command: logstash -f /config/logstash.conf
     networks:
       - application_network
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5
 
   elasticsearch-logs:
     image: elasticsearch:8.10.2
@@ -38,6 +41,9 @@ services:
       - es-logs-data:/tmp/elasticsearch/data
     networks:
       - application_network
+    mem_limit: 1024m
+    mem_reservation: 128M
+    cpus: 2
 
   kibana-logs:
     image: kibana:8.10.2

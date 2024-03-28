@@ -55,12 +55,12 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     app = FastAPI(
-    title=settings.project_name,
-    description="Auth logic",
-    docs_url='/api/openapi',
-    openapi_url='/api/openapi.json',
-    default_response_class=ORJSONResponse,
-    lifespan=lifespan
+        title=settings.project_name,
+        description="Auth logic",
+        docs_url='/api/openapi',
+        openapi_url='/api/openapi.json',
+        default_response_class=ORJSONResponse,
+        lifespan=lifespan
     )
     app.include_router(
         router=auth_api.router,
@@ -97,8 +97,8 @@ async def before_request(request: Request, call_next):
     result = await RequestLimit().is_over_limit(user=user)
     if result:
         return ORJSONResponse(
-            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            content={'detail': 'Too many requests'}
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS, content={
+                'detail': 'Too many requests'}
         )
 
     response = await call_next(request)

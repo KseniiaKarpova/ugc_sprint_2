@@ -16,6 +16,7 @@ orjson = "^3.9.15"
 fastapi-pagination = "^0.12.19"
 shortuuid = "^1.0.13"
 redis = "^5.0.1"
+python-jose = "^3.3.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
