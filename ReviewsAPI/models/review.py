@@ -1,19 +1,14 @@
-from datetime import datetime, timezone
-from uuid import UUID, uuid4
+from uuid import UUID
 from schemas.author import Author
 from beanie import Document
-from pydantic import Field, BaseModel
-
-
-class BaseMixin(BaseModel):
-    id: UUID = Field(default_factory=uuid4)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+from pydantic import Field
+from models import BaseMixin
 
 
 class FilmReview(BaseMixin, Document):
     film_id: UUID
     author: Author
-    text: str = Field(None)
+    text: str | None = Field(None)
     mark: int = Field(ge=0, le=10)
 
     class Settings:

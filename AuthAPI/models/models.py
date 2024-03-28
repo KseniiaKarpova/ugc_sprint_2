@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 
@@ -91,12 +90,6 @@ class UserHistory(Base):
     user_agent: Mapped[str] = mapped_column(String(255), nullable=True)
     refresh_token: Mapped[str] = mapped_column(Text(), nullable=True)
     user: Mapped['User'] = relationship(back_populates='user_history')
-
-
-class SocialNetworksEnum(enum.Enum):
-    Yandex = 'yandex'
-    Google = 'google'
-    VK = 'vk'
 
 
 class SocialAccount(Base):

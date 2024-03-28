@@ -1,20 +1,8 @@
-import sys
-from typing import Sequence, Type, TypeVar
-
-from beanie import Document
-from models.review import ReviewMark, FilmReview
-
-# All database models must be imported here to be able to
-# initialize them on startup.
-
-DocType = TypeVar('DocType', bound=Document)
+from pydantic import Field, BaseModel
+from datetime import datetime, timezone
+from uuid import UUID, uuid4
 
 
-def gather_documents() -> Sequence[Type[DocType]]:
-    from inspect import getmembers, isclass
-
-    return [
-        doc
-        for _, doc in getmembers(sys.modules[__name__], isclass)
-        if issubclass(doc, Document) and doc.__name__ != 'Document'
-    ]
+class BaseMixin(BaseModel):
+    id: UUID = Field(default_factory=uuid4)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

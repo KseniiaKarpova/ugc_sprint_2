@@ -28,7 +28,7 @@ services:
     volumes:
       - ./ReviewsAPI:/opt/app
       - logs:/opt/logs
-    command: poetry run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    command: poetry run uvicorn main:app --host 0.0.0.0 --port 3000 --reload
     depends_on:
       mongos:
         condition: service_healthy
@@ -159,6 +159,9 @@ services:
         condition: service_completed_successfully
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 1
 
   config_shared_cluster:
     <<: *mongo-common

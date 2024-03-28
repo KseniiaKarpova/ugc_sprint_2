@@ -41,7 +41,10 @@ async def jwt_user_data(subject: dict):
     login, uuid = subject.get('login'), subject.get('uuid')
     if not login or not uuid:
         raise HTTPException(status_code=http.HTTPStatus.FORBIDDEN, detail='Invalid authorization code.')
-    return JWTUserData(login=login, uuid=uuid)
+    return JWTUserData(
+        login=login, uuid=uuid,
+        roles=subject.get('roles'), surname=subject.get('surname'),
+        name=subject.get('name'))
 
 
 class JWTBearer(HTTPBearer):
@@ -89,7 +92,6 @@ class JWTBearer(HTTPBearer):
 class JwtHandler:
     def __init__(self, session: AsyncSession,
                  jwt_data: dict = None) -> None:
-
         self.jwt_data = jwt_data
         self.storage = UserStorage(session=session)
 
@@ -101,7 +103,7 @@ class JwtHandler:
         })
         if exists is False:
             raise forbidden_error
-        return await jwt_user_data(subject=self.jwt_data.get('subject'))
+        return await jwt_user_data(subject=self.subject)
 
     async def get_current_user(self) -> User:
         return await jwt_user_data(subject=self.subject)
@@ -146,7 +148,9 @@ class AuthHandler:
         subject = json.dumps({
             'login': user.login,
             'uuid': str(user.uuid),
-            'roles': roles
+            'roles': roles,
+            'surname': user.surname,
+            'name': user.name
         })
 
         access_token = await self.generate_access_token(subject=subject)
