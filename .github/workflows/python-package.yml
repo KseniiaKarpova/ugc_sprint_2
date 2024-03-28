@@ -29,7 +29,7 @@ jobs:
     - name: Lint with flake8
       run: |
         mkdir styleguide
-        flake8 . --max-line-length 300 --exit-zero --format=html
+        flake8 . --max-line-length 300 --exit-zero --format=html --htmldir=styleguide/
         
   notify:
     runs-on: ubuntu-latest
