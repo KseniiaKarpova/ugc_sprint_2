@@ -4,7 +4,7 @@ from typing import Optional
 
 from core.config import settings
 from db.redis import get_redis
-from exceptions import forbidden_error, server_error
+from exceptions import forbidden_error, wrong_data
 from fastapi import Depends, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt, ExpiredSignatureError
@@ -23,7 +23,7 @@ def decode_token(token: str) -> Optional[dict]:
     except ExpiredSignatureError:
         raise token_expired
     except Exception:
-        raise server_error
+        raise wrong_data
 
 
 async def jwt_user_data(subject: dict):
