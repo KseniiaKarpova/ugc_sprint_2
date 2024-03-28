@@ -6,7 +6,7 @@ from starlette.middleware.cors import CORSMiddleware
 from middleware.request_log import RequestLogMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from core import config, logger
+from core import config
 
 settings = config.APPSettings()
 

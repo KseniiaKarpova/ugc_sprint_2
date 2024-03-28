@@ -4,7 +4,7 @@ from typing import Optional
 
 from core.config import settings
 from db.redis import get_redis
-from exceptions import forbidden_error, server_error, wrong_data
+from exceptions import forbidden_error, wrong_data
 from fastapi import Depends, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt, ExpiredSignatureError
