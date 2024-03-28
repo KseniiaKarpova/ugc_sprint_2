@@ -42,8 +42,8 @@ jobs:
       - name: Send Telegram notification
         uses: appleboy/telegram-action@master
         with:
-          to: ${{ secrets.tg_to }}
-          token: ${{ secrets.tg_token }}
+          to: ${{ secrets.TG_TO }}
+          token: ${{ secrets.TG_TOKEN }}
           format: html
           message: |
             <b>${{ github.workflow }}</b>
