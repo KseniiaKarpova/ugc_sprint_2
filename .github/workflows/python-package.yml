@@ -1,6 +1,3 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
 name: Python package
 
 on:
@@ -32,7 +29,7 @@ jobs:
     - name: Lint with flake8
       run: |
         mkdir styleguide
-        flake8 . --max-line-length 300 --exit-zero --format=html --htmldir=styleguide/
+        flake8 . --max-line-length 300 --exit-zero --format=html
         
   notify:
     runs-on: ubuntu-latest
@@ -49,4 +46,4 @@ jobs:
             <b>${{ github.workflow }}</b>
             <b>Репозиторий:</b> <a href="https://github.com/${{github.repository}}">${{github.repository}}</a>
             <b>Статус:</b> ${{ needs.build.result }}
-            <b>Детали:</b> <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Просмотреть</a>
+            <b>Детали:</b> 📝 {{commit.author}} добавил изменения в {{commit.branch}}. <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Подробнее</a>
