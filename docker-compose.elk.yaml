@@ -8,7 +8,7 @@ services:
       - logs:/var/app/log
       - ./filebeat/filebeat.review.yaml:/usr/share/filebeat/filebeat.yaml
     depends_on:
-      - kibana-logs
+      - logstash
       - elasticsearch-logs
     networks:
       - application_network
@@ -20,7 +20,7 @@ services:
       - logs:/var/app/log
       - ./filebeat/filebeat.auth.yaml:/usr/share/filebeat/filebeat.yaml
     depends_on:
-      - kibana-logs
+      - logstash
       - elasticsearch-logs
     networks:
       - application_network
@@ -32,7 +32,7 @@ services:
       - ./filebeat/filebeat.nginx.yaml:/usr/share/filebeat/filebeat.yaml
       - /tmp/logs/nginx:/var/log/nginx:ro
     depends_on:
-      - kibana-logs
+      - logstash
       - elasticsearch-logs
     networks:
       - application_network
@@ -78,6 +78,7 @@ services:
       - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
     depends_on:
       - elasticsearch-logs
+      - logstash
     networks:
       - application_network
 
