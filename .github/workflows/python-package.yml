@@ -31,7 +31,8 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
-        flake8 . --max-line-length 300 --exit-zero --format=html --htmldir=reports/ugc_service/styleguide/
+        mkdir styleguide
+        flake8 . --max-line-length 300 --exit-zero --format=html --htmldir=styleguide/
         
   notify:
     runs-on: ubuntu-latest
