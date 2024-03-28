@@ -30,7 +30,6 @@ services:
       - .env
     volumes:
       - ./AuthAPI:/opt/app
-      - logs:/opt/logs
     build:
       context: AuthAPI
       dockerfile: dockerfile

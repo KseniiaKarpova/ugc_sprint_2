@@ -1,4 +1,4 @@
-name: "reviews_api_filebeat"
+name: "reviews_api"
 logging.metrics.enabled: false
 xpack.security.enabled: false
 xpack.monitoring.enabled: false
@@ -11,7 +11,7 @@ filebeat.inputs:
   enabled: true
   paths:
     - /var/app/log/*
-  tags: ["reviews_api", "auth_api"]
+  tags: ["reviews_api"]
   json:
     keys_under_root: true
     add_error_key: true
