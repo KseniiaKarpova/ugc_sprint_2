@@ -32,3 +32,20 @@ jobs:
     - name: Lint with flake8
       run: |
         flake8 . --max-line-length 300 --exit-zero --format=html --htmldir=reports/ugc_service/styleguide/
+        
+  notify:
+    runs-on: ubuntu-latest
+    if: cancelled() == false
+    needs: build
+    steps:
+      - name: Send Telegram notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.tg_to }}
+          token: ${{ secrets.tg_token }}
+          format: html
+          message: |
+            <b>${{ github.workflow }}</b>
+            <b>Репозиторий:</b> <a href="https://github.com/${{github.repository}}">${{github.repository}}</a>
+            <b>Статус:</b> ${{ needs.build.result }}
+            <b>Детали:</b> <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Просмотреть</a>
