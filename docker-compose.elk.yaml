@@ -3,6 +3,9 @@ version: '3.9'
 services:
   filebeat-reviews-api:
     image: elastic/filebeat:8.10.2
+    build:
+      context: ./filebeat
+      dockerfile: review_dockerfile
     container_name: reviews_api_filebeat
     volumes:
       - logs:/var/app/log
@@ -15,6 +18,9 @@ services:
   
   filebeat-auth-api:
     image: elastic/filebeat:8.10.2
+    build:
+      context: ./filebeat
+      dockerfile: auth_dockerfile
     container_name: filebeat_auth_api
     volumes:
       - logs:/var/app/log
@@ -27,6 +33,9 @@ services:
 
   filebeat-nginx:
     image: elastic/filebeat:8.10.2
+    build:
+      context: ./filebeat
+      dockerfile: nginx_dockerfile
     container_name: filebeat_nginx
     volumes:
       - ./filebeat/filebeat.nginx.yaml:/usr/share/filebeat/filebeat.yaml
@@ -78,6 +87,7 @@ services:
       - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
     depends_on:
       - elasticsearch-logs
+      - logstash
     networks:
       - application_network
 

@@ -11,12 +11,18 @@ from db import mongo, init_db, redis
 from redis.asyncio import Redis
 from core.logger import LOGGING, setup_root_logger
 from middleware.main import setup_middleware
+import sentry_sdk
 
 setup_root_logger()
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    sentry_sdk.init(
+        dsn=settings.logger.sentry_dsn,
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+    )
     mongo.mongo_client = AsyncIOMotorClient(str(settings.mongodb.uri))
     await init_db.init(client=mongo.mongo_client)
     redis.redis = Redis(host=settings.redis.host, port=settings.redis.port)
