@@ -35,12 +35,12 @@ jobs:
         flake8 . --max-line-length 300 --exit-zero --format=html --htmldir=reports/styleguide/
 
     - name: Mypy
-        run: |
+      run: |
           mypy --html-report reports/mypy/ . || true
 
-      - name:  Reports
-        uses: actions/upload-artifact@v3
-        with:
+    - name:  Reports
+      uses: actions/upload-artifact@v3
+      with:
           name: code-verify-reports
           path: reports/
         
