@@ -60,4 +60,4 @@ jobs:
             <b>${{ github.workflow }}</b>
             <b>Репозиторий:</b> <a href="https://github.com/${{github.repository}}">${{github.repository}}</a>
             <b>Статус:</b> ${{ needs.build.result }}
-            <b>Детали:</b> 📝 {{commit.author}} добавил изменения в {{commit.branch}}. <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Подробнее</a>
+            <b>Детали:</b> Изменения в {{commit.branch}}. <a href="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}">Подробнее</a>
