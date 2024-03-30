@@ -41,10 +41,13 @@ def make_post_request(aiohttp_session: ClientSession):
 
 @pytest_asyncio.fixture(name='get_access_token')
 def get_access_token(aiohttp_session: ClientSession):
+    reg_url = f"{test_settings.auth_service_url}/api/v1/auth/registration"
+    login_url = f"{test_settings.auth_service_url}/api/v1/auth/login"
+
     async def inner():
-        async with aiohttp_session.post(f"{test_settings.auth_service_url}/api/v1/auth/registration", json=user_create) as response:
-            json_data, status_code = await response.json(), response.status
-        async with aiohttp_session.post(f"{test_settings.auth_service_url}/api/v1/auth/login", json=user_login) as response:
-            json_data, status_code = await response.json(), response.status
+        async with aiohttp_session.post(reg_url, json=user_create) as response:
+            json_data, _ = await response.json(), response.status
+        async with aiohttp_session.post(login_url, json=user_login) as response:
+            json_data, _ = await response.json(), response.status
         return json_data['access_token']
     return inner

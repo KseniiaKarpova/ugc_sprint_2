@@ -52,7 +52,7 @@ class ReviewFilmService(BaseReviewFilmService):
 
     async def author(self, data: JWTUserData):
         return Author(id=data.uuid, first_name=data.name, last_name=data.surname)
-    
+
     async def get_film_reviews(self, film_id: UUID):
         return await self.storage.get_with_marks(film_id=film_id)
 

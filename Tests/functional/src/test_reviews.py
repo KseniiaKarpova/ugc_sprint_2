@@ -28,10 +28,14 @@ import random
     ]
 )
 @pytest.mark.asyncio
-async def test_like(make_post_request, get_access_token ,in_data, out_data):
+async def test_like(make_post_request, get_access_token, in_data, out_data):
     access_token = await get_access_token()
     headers = {"Authorization": f"Bearer {access_token}"}
-    body, status = await make_post_request(endpoint="/api/v1/reviews/film/like", service_url=test_settings.reviews_service_url, json=in_data, headers=headers)
+    body, status = await make_post_request(
+        endpoint="/api/v1/reviews/film/like",
+        service_url=test_settings.reviews_service_url,
+        json=in_data,
+        headers=headers)
     assert status == out_data['status_code']
 
 
@@ -59,10 +63,14 @@ async def test_like(make_post_request, get_access_token ,in_data, out_data):
     ]
 )
 @pytest.mark.asyncio
-async def test_dislike(make_post_request, get_access_token ,in_data, out_data):
+async def test_dislike(make_post_request, get_access_token, in_data, out_data):
     access_token = await get_access_token()
     headers = {"Authorization": f"Bearer {access_token}"}
-    body, status = await make_post_request(endpoint="/api/v1/reviews/film/dislike", service_url=test_settings.reviews_service_url, json=in_data, headers=headers)
+    body, status = await make_post_request(
+        endpoint="/api/v1/reviews/film/dislike",
+        service_url=test_settings.reviews_service_url,
+        json=in_data,
+        headers=headers)
     assert status == out_data['status_code']
 
 
@@ -104,8 +112,12 @@ async def test_dislike(make_post_request, get_access_token ,in_data, out_data):
     ]
 )
 @pytest.mark.asyncio
-async def test_review_creation(make_post_request, get_access_token ,in_data, out_data):
+async def test_review_creation(make_post_request, get_access_token, in_data, out_data):
     access_token = await get_access_token()
     headers = {"Authorization": f"Bearer {access_token}"}
-    body, status = await make_post_request(endpoint="/api/v1/reviews", service_url=test_settings.reviews_service_url, json=in_data, headers=headers)
+    body, status = await make_post_request(
+        endpoint="/api/v1/reviews",
+        service_url=test_settings.reviews_service_url,
+        json=in_data,
+        headers=headers)
     assert status == out_data['status_code']

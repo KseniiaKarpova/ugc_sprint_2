@@ -35,7 +35,7 @@ class ReviewFilmStorage(BaseStorage):
     async def get_with_marks(self, film_id: UUID):
         return await FilmReview.aggregate(
             [
-                {"$match": {"film_id": film_id}},# Match FilmReview documents by the specific film_id
+                {"$match": {"film_id": film_id}},  # Match FilmReview documents by the specific film_id
                 {"$lookup": {
                     "from": ReviewMark.get_motor_collection().name,
                     "localField": "_id",

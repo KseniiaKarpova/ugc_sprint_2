@@ -44,7 +44,6 @@ class LoggerSettings(BaseSettings):
     model_config: str = SettingsConfigDict(env_prefix='logger_')
 
 
-
 class Settings(BaseSettings):
     mongodb: MongoSettings = MongoSettings()
     logger: LoggerSettings = LoggerSettings()
