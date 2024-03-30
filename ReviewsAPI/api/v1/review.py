@@ -28,7 +28,7 @@ async def dislike_film(
         service: ReviewFilmService = Depends(get_film_review_service)):
     current_user = await jwt_handler.get_current_user()
     service.dto = MarkFilmDto(film_id=dto.film_id, mark=0)
-    await service.set_dislike(user=current_user)
+    return await service.set_dislike(user=current_user)
 
 
 @router.delete('/{review_id}', status_code=status.HTTP_200_OK)
@@ -56,3 +56,11 @@ async def create_review(
     current_user = await jwt_handler.get_current_user()
     service.dto = dto
     return await service.set_review(user=current_user)
+
+
+@router.get('/{film_id}', status_code=status.HTTP_201_CREATED)
+async def get_film_reviews(
+        film_id: UUID,
+        jwt_handler: JwtHandler = Depends(require_access_token),
+        service: ReviewFilmService = Depends(get_film_review_service)):
+    return await service.get_film_reviews(film_id=film_id)
