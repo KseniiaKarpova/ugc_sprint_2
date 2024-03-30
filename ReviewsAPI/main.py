@@ -23,7 +23,7 @@ async def lifespan(_: FastAPI):
         traces_sample_rate=1.0,
         profiles_sample_rate=1.0,
     )
-    mongo.mongo_client = AsyncIOMotorClient(str(settings.mongodb.uri))
+    mongo.mongo_client = AsyncIOMotorClient(str(settings.mongodb.uri), uuidRepresentation='standard')
     await init_db.init(client=mongo.mongo_client)
     redis.redis = Redis(host=settings.redis.host, port=settings.redis.port)
     yield
@@ -64,6 +64,9 @@ async def before_request(request: Request, call_next):
 
     response = await call_next(request)
     request_id = request.headers.get('X-Request-Id')
+    if settings.jaeger.enable is False:
+        return response
+    request_id = request.headers.get('request_id')
     if not request_id:
         return ORJSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST, content={

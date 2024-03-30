@@ -1,5 +1,5 @@
 from pymongo.errors import DuplicateKeyError
-from models.review import FilmReview, Document
+from models.review import FilmReview, Document, ReviewMark
 from storages import BaseStorage
 from schemas.review import MarkFilmDto, UpdateMarkFilmDto
 from schemas.author import Author
@@ -31,3 +31,14 @@ class ReviewFilmStorage(BaseStorage):
 
     async def get(self, **kwargs):
         return await FilmReview.find_one(kwargs)
+
+    async def get_with_marks(self, film_id: UUID):
+        return await FilmReview.aggregate(
+            [
+                {"$match": {"film_id": film_id}},  # Match FilmReview documents by the specific film_id
+                {"$lookup": {
+                    "from": ReviewMark.get_motor_collection().name,
+                    "localField": "_id",
+                    "foreignField": "review_id",
+                    "as": "review_marks"}}
+                    ]).to_list()

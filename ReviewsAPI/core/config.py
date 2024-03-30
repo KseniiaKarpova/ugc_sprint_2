@@ -21,6 +21,13 @@ class RedisSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix='redis_')
 
 
+class JaegerSettings(BaseSettings):
+    host: str = ...
+    port: int = ...
+    enable: bool = ...
+    model_config: str = SettingsConfigDict(env_prefix='jaeger_')
+
+
 class MongoSettings(BaseSettings):
     uri: MongoDsn = ...
     db_name: str = ...
@@ -37,12 +44,12 @@ class LoggerSettings(BaseSettings):
     model_config: str = SettingsConfigDict(env_prefix='logger_')
 
 
-
 class Settings(BaseSettings):
     mongodb: MongoSettings = MongoSettings()
     logger: LoggerSettings = LoggerSettings()
     redis: RedisSettings = RedisSettings()
     auth: AuthSettings = AuthSettings()
+    jaeger: JaegerSettings = JaegerSettings()
     mongodb_uri: MongoDsn = ...
     mongodb_db_name: str = ...
     log_level: str = 'INFO'
